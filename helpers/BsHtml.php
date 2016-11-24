@@ -3058,6 +3058,9 @@ EOD;
         if ($depth === 0) {
             $label .= ' <b class="caret"></b>';
         }
+		if (empty($url)) {
+			$url = '#';
+		}
         $htmlOptions['data-toggle'] = 'dropdown';
         return self::link($label, $url, $htmlOptions);
     }
