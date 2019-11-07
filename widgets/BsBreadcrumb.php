@@ -81,20 +81,27 @@ class BsBreadcrumb extends CBreadcrumbs
         if ($this->homeLink === null)
             $links[] = strtr($this->activeLinkTemplate, array(
                 '{url}' => CHtml::normalizeUrl(Yii::app()->homeUrl),
-                '{label}' => Yii::t('zii', 'Home'),
+                '{label}' => Yii::t('zii', 'Home')
             ));
         elseif ($this->homeLink !== false)
             $links[] = $this->homeLink;
 
+        $i = 0;
         foreach ($this->links as $label => $url) {
             if (is_string($label) || is_array($url)) {
                 $links[] = strtr($this->activeLinkTemplate, array(
                     '{url}' => CHtml::normalizeUrl($url),
                     '{label}' => $this->encodeLabel ? CHtml::encode($label) : $label,
+					'{position}' => $i
                 ));
             } else {
-                $links[] = str_replace('{label}', $this->encodeLabel ? CHtml::encode($url) : $url, $this->inactiveLinkTemplate);
+                $links[] = strtr($this->inactiveLinkTemplate, array(
+                	'{label}' => $this->encodeLabel ? CHtml::encode($url) : $url,
+					'{position}' => $i
+				));
             }
+
+            $i++;
         }
         echo implode($this->separator, $links);
         echo CHtml::closeTag($this->tagName);
